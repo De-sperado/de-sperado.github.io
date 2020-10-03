@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://de-sperado.github.io">
-  <title>My First Post | 6v&#39;s blog</title>
+  <title>MobileInsight 论文笔记 | 6v&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="hellllll what happened？  1a&#x3D;b+1">
+  <meta name="description" content="MobileInsight: Extracting and Analyzing Cellular Network Information on Smartphones 读的李老师的第一篇论文，也是李老师很重要的一项工作。  structureABSTRACT MOBILEINSIGHT：a software tool that collects, analyzes and exploits run">
 <meta property="og:type" content="article">
-<meta property="og:title" content="My First Post">
-<meta property="og:url" content="https://de-sperado.github.io/2020/10/03/My-First-Post/index.html">
+<meta property="og:title" content="MobileInsight 论文笔记">
+<meta property="og:url" content="https://de-sperado.github.io/2020/10/03/MobileInsight-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="6v&#39;s blog">
-<meta property="og:description" content="hellllll what happened？  1a&#x3D;b+1">
+<meta property="og:description" content="MobileInsight: Extracting and Analyzing Cellular Network Information on Smartphones 读的李老师的第一篇论文，也是李老师很重要的一项工作。  structureABSTRACT MOBILEINSIGHT：a software tool that collects, analyzes and exploits run">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-10-03T02:06:05.000Z">
-<meta property="article:modified_time" content="2020-10-03T09:07:02.906Z">
+<meta property="article:published_time" content="2020-10-03T08:55:00.000Z">
+<meta property="article:modified_time" content="2020-10-03T15:29:13.386Z">
 <meta property="article:author" content="Wei Liu">
+<meta property="article:tag" content="Li&#39;s paper">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="6v&#39;s blog" type="application/atom+xml">
@@ -150,31 +151,47 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-My-First-Post" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-MobileInsight-论文笔记" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      My First Post
+      MobileInsight 论文笔记
     </h1>
   
 
         
-        <a href="/2020/10/03/My-First-Post/" class="archive-article-date">
-  	<time datetime="2020-10-03T02:06:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-03</time>
+        <a href="/2020/10/03/MobileInsight-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="archive-article-date">
+  	<time datetime="2020-10-03T08:55:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-03</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ul>
-<li>hellllll</li>
-<li>what happened？</li>
+        <h3 id="MobileInsight-Extracting-and-Analyzing-Cellular-Network-Information-on-Smartphones"><a href="#MobileInsight-Extracting-and-Analyzing-Cellular-Network-Information-on-Smartphones" class="headerlink" title="MobileInsight: Extracting and Analyzing Cellular Network Information on Smartphones"></a>MobileInsight: Extracting and Analyzing Cellular Network Information on Smartphones</h3><blockquote>
+<p>读的李老师的第一篇论文，也是李老师很重要的一项工作。</p>
+</blockquote>
+<h4 id="structure"><a href="#structure" class="headerlink" title="structure"></a>structure</h4><h5 id="ABSTRACT"><a href="#ABSTRACT" class="headerlink" title="ABSTRACT"></a>ABSTRACT</h5><ul>
+<li><strong>MOBILEINSIGHT</strong>：a software tool that <strong>collects, analyzes and exploits</strong> runtime network information from operational cellular networks.</li>
+<li>MOBILEINSIGHT runs on COTS phones without extra hardware or additional support from operators.</li>
+<li>It exposes protocol messages on both <strong>control plane</strong> and (below IP) <strong>data plane</strong> from the 3G/4G chipset. It provides <strong>in-device protocol analysis</strong> and <strong>operation logic inference</strong>.</li>
+<li>It further offers a simple API, through which developers and researchers obtain access to low-level network information for their mobile applications.</li>
+<li>Three cases.</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=b+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h5 id="INTRODUCTION"><a href="#INTRODUCTION" class="headerlink" title="INTRODUCTION"></a>INTRODUCTION</h5><ul>
+<li>对于用户和设备来说，蜂窝网络协议的运行时操作是不易获取的。researchers 和 developers不能准确提取和提炼其中信息。</li>
+<li>需要这样的社区开源工具，需要满足：<ol>
+<li>在COTS设备运行，不需要其他硬件支持。</li>
+<li>给定数据跟踪，它提供分析以提取常用用法设置和异常故障情况的动态协议行为。 </li>
+<li>提供API并且框架能够容易扩展。</li>
+</ol>
+</li>
+<li></li>
+</ul>
+<h4 id="words"><a href="#words" class="headerlink" title="words"></a>words</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">commercial off-the-shelf (COTS) 商用现成品或技术</span><br><span class="line">chipset 芯片</span><br><span class="line">infrastructure 基础设施</span><br><span class="line">tablet 平板</span><br><span class="line">renovate 修复</span><br><span class="line">empower 授权</span><br><span class="line">shed light on 阐明</span><br><span class="line">facilitate 促进</span><br><span class="line">In a nutshell 简而言之</span><br><span class="line">radio resource control (RRC)</span><br><span class="line">overhead 开销</span><br><span class="line">primer 入门书</span><br><span class="line">access stratum 访问层</span><br><span class="line">variant 变体</span><br><span class="line">de facto 事实上的（西语）</span><br><span class="line">vebdor 供应商</span><br><span class="line">encapsulates 封装</span><br><span class="line">retrieval 恢复</span><br><span class="line">deployability 可部署性</span><br><span class="line">granularity 粒度</span><br><span class="line">low latency 低延迟</span><br><span class="line">elaborate 阐述</span><br><span class="line">two orders of magnitude 两个数量级</span><br><span class="line">of modest sizes 大小适中</span><br><span class="line">customize 认证</span><br><span class="line">perceive 感知</span><br><span class="line">prefix 前缀</span><br><span class="line">iteratively 反复的</span><br><span class="line">directed acyclic graph 有向无环图</span><br><span class="line">minor 轻微的</span><br><span class="line">daemons 守护程序</span><br><span class="line">retrieve 检索</span><br><span class="line">Miscellaneous 杂项</span><br><span class="line">ciphering encryption 加密</span><br><span class="line">troubleshoot 故障排除</span><br><span class="line">vibrates 抖动</span><br><span class="line">seamless 无缝</span><br><span class="line">throttle 节流</span><br><span class="line">intrusion 入侵</span><br><span class="line">loophole 漏洞</span><br><span class="line">refine 提炼</span><br></pre></td></tr></table></figure>
       
 
       
@@ -213,6 +230,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Li's paper</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -263,7 +291,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://de-sperado.github.io/2020/10/03/My-First-Post/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://de-sperado.github.io/2020/10/03/MobileInsight-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -277,18 +305,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/10/03/MobileInsight-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          MobileInsight 论文笔记
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/10/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2020/10/03/My-First-Post/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">My First Post</div>
       <i class="icon-circle-right"></i>
     </a>
   
