@@ -15,12 +15,16 @@
 <meta property="og:site_name" content="6v&#39;s blog">
 <meta property="og:description" content="MobileInsight: Extracting and Analyzing Cellular Network Information on Smartphones 读的李老师的第一篇论文，也是李老师很重要的一项工作。  structureABSTRACT MOBILEINSIGHT：a software tool that collects, analyzes and exploits run">
 <meta property="og:locale">
+<meta property="og:image" content="https://de-sperado.github.io/images/pasted-2.png">
+<meta property="og:image" content="https://de-sperado.github.io/images/pasted-3.png">
+<meta property="og:image" content="https://de-sperado.github.io/images/pasted-4.png">
 <meta property="article:published_time" content="2020-10-03T08:55:00.000Z">
-<meta property="article:modified_time" content="2020-10-04T09:35:23.170Z">
+<meta property="article:modified_time" content="2020-10-05T06:57:47.250Z">
 <meta property="article:author" content="Wei Liu">
 <meta property="article:tag" content="Li&#39;s paper">
 <meta property="article:tag" content="论文笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://de-sperado.github.io/images/pasted-2.png">
   
     <link rel="alternative" href="/atom.xml" title="6v&#39;s blog" type="application/atom+xml">
   
@@ -182,6 +186,8 @@
 <li>It further offers a simple API, through which developers and researchers obtain access to low-level network information for their mobile applications.</li>
 <li>Three cases.</li>
 </ul>
+<a id="more"></a>
+
 <h5 id="INTRODUCTION"><a href="#INTRODUCTION" class="headerlink" title="INTRODUCTION"></a>INTRODUCTION</h5><ul>
 <li>对于用户和设备来说，蜂窝网络协议的运行时的操作是不易获取的。researchers 和 developers不能准确提取和提炼其中信息。运营商不愿意公开基础设施端的信息，硬件端的操作也难以获取。</li>
 <li>需要这样的社区开源工具，需要满足：<ol>
@@ -192,9 +198,102 @@
 </li>
 <li>MobileInsight克服阻隔，提供细粒度的3/4g协议信息的访问（开源）。</li>
 <li>支持in-device analytics,揭露发生了什么，并指明why and how。</li>
+<li>目的在于方便researcher和developer简便快速的获取低层网络信息。</li>
+<li>总的来说，MobileInsight利用COTS智能手机中的旁路信道，在设备和网络之间的信令信息中提取蜂窝的操作。不止推断出了运行时协议状态机和动态过程，并且推断出了协议操作逻辑。举例说明了在failure diagnosis,performance improvement, and security loophole detection方面的帮助。</li>
+</ul>
+<h5 id="CELLULAR-NETWORK-PRIMER"><a href="#CELLULAR-NETWORK-PRIMER" class="headerlink" title="CELLULAR NETWORK PRIMER"></a>CELLULAR NETWORK PRIMER</h5><p><img src="https://de-sperado.github.io/images/pasted-2.png" alt="协议栈"></p>
+<ul>
+<li><strong>协议栈</strong>：控制层协议分为访问层（AS，包括RRC）和非访问层（NAS）<ul>
+<li>RRC（RRC is mainly for radio resource allocation and radio connection management; it also helps to transfer signaling messages over the air）</li>
+<li>NAS is responsible for conveying <strong>non-radio</strong> signaling messages between the device and the core network </li>
+<li>MM offers location updates and mobility support for call/data sessions</li>
+<li>SM is to create and mandate voice calls and data sessions.</li>
+</ul>
+</li>
+<li>Limited in-device access through APIs：<ul>
+<li>OS可以通过radio interface layer获取少量的信息，但是该层是vendor-specific，某些OS将改层的功能封装了。</li>
+</ul>
+</li>
+</ul>
+<h5 id="MOBILEINSIGHT-OVERVIEW"><a href="#MOBILEINSIGHT-OVERVIEW" class="headerlink" title="MOBILEINSIGHT OVERVIEW"></a>MOBILEINSIGHT OVERVIEW</h5><p><strong>three concrete goals</strong></p>
+<ul>
+<li>In-device deployability</li>
+<li>Protocol analytics：analytics for standardized cellular protocols, including their state dynamics and operation logics.运行时分析，所以可以用于性能提升和错误分析。</li>
+<li>Fine granularity and wide coverage.</li>
+</ul>
+<p><img src="https://de-sperado.github.io/images/pasted-3.png" alt="two_part"><br><strong>两部分构成</strong></p>
+<ul>
+<li>Monitor:把raw cellular logs从蜂窝层暴露给运行时的用户空间设备，解析并提取信息。框架可扩展，每个解析器对应相应的协议。</li>
+<li>Analyzer 揭露protocol dynamics and operation logics，结合提取的信息和预期行为模型，推断出协议状态，状态转变的触发条件，协议采取的行为。推断出协议的运行逻辑。</li>
+</ul>
+<h5 id="IN-DEVICE-RUNTIME-MONITOR"><a href="#IN-DEVICE-RUNTIME-MONITOR" class="headerlink" title="IN-DEVICE RUNTIME MONITOR"></a>IN-DEVICE RUNTIME MONITOR</h5><p><strong>三个问题</strong></p>
+<ul>
+<li>如何把蜂窝信息从硬件提取到软件。</li>
+<li>如何解析多种且相互依赖的协议信息。</li>
+<li>如何解决延迟和减少系统开销</li>
+</ul>
+<p><strong>Exposing Raw Logs from Side Channel</strong></p>
+<ul>
+<li>利用芯片和软件之间的旁路，芯片支持外部分析模式，将蜂窝接口提供给USB。MOBILEINSIGHT在移动设备上模拟外部记录器，以收集原始的蜂窝日志，直接向虚拟设备发出命令，之后提取16进制日志流，传递到解析器。</li>
+</ul>
+<p><strong>Parsing Cellular Network Messages</strong></p>
+<ul>
+<li>依赖于原始数据和开源的设备代码。</li>
+<li>分为两步：metadata parser提取type ID and release version，之后根据这个元组，选取对应的message parser。有些格式可以自动获取，有些需要手动解码。</li>
+<li>Handling protocol dependency：实现一个protocol configuration repository，一旦受到信息，解析出一系列参数，配置，计时器等等，记录下来，用到之后的解析中。</li>
+</ul>
+<p><strong>optimization</strong></p>
+<ul>
+<li>on-demand collection to only archive those logs required by the device-specified analyzers.</li>
+<li>on-demand parsing to only decode those necessary fields</li>
+<li>parallelize log collection and parsing</li>
+</ul>
+<h5 id="CELLULAR-ANALYTICS"><a href="#CELLULAR-ANALYTICS" class="headerlink" title="CELLULAR ANALYTICS"></a>CELLULAR ANALYTICS</h5><p>分为两部分：</p>
+<ul>
+<li>Protocol state dynamics：协议状态，协议状态转换事件。</li>
+<li>Protocol operation logic：the algorithm or policy used by the network。</li>
+</ul>
+<p><strong>1.Protocol state dynamics</strong></p>
+<p>要抓取的信息包括：current state,the state transitions and the conditions for transitions。</p>
+<p>两阶段模型：</p>
+<ul>
+<li>根据3GPP standards为每个协议生成reference state-machine model。该模型把设备侧的状态和转换条件看做蜂窝消息的函数。</li>
+<li>将runtime cellular messages（之前提取的）输入模型，追踪状态转换，得到转换参数。因为“函数和参数”都有了，状态也就确定了。</li>
+</ul>
+<p><strong>Reference state machine（类似自动机？）</strong></p>
+<ul>
+<li>状态是由协议定义的。例如RRC的状态代表基站和设备之间的连通性。</li>
+<li>每个状态转换是一个关于message的二元函数。一旦受到某个预期的消息，转换就触发。</li>
+<li>三个协议tracking的例子。</li>
+</ul>
+<p><strong>2.Inference of Protocol Operation Logic</strong></p>
+<p>像是强行开源？</p>
+<p>以Handoff（小区切换）为例，基站做决定，移动设备辅助。BS1向手机寻求测绘报告周围小区的信号质量，之后BS1运行他的decision logic判断是否handoff。可能会reconfigure the device for further measurements，也可能直接handoff。</p>
+<p>两个挑战：</p>
+<ul>
+<li>运营商可以自己制定logic（虽然是定制，但遵从standardized mechanisms，并且依赖设备的反馈去运行协议）</li>
+<li>设备不能获取所有的网络侧的行为，需要依赖他的观察和交互，来学习logic。</li>
+</ul>
+<p>引入了QSM（有限状态机合并算法），利用移动网络的domain-specific knowledge来提升推断准确率。</p>
+<p><strong>Modeling handoff decision logic</strong></p>
+<p>将其看做特定领域的有限状态自动机，每个状态表示the device’s control state configured by the network，两个状态的控制参数相同，则称他们等价。对于handoff来说，target cells相同，就说两个状态相同。</p>
+<p>当一个新的control命令被接收时，发生状态转换，根据QSM，状态被编码为前缀。</p>
+<p><strong>Online inferenc</strong></p>
+<p>对于每个服务中心的基站，收集运行时handoff事件，与对应的测量控制/报告构成sample。不断的通过合并新状态与已知状态更新状态机。分为三步：</p>
+<ul>
+<li>Sample collection：不主动探测蜂窝网，运行时收集样本。样本序列由旧命令，新命令和之间的报告组成。</li>
+<li>Partial recovery：对于每个样本序列，通过把旧命令转化为新命令，转换条件是feedback的方式生成状态转换。</li>
+<li>Aggregation：一旦一个新的部分转换被创建，这一步把他和已知的状态合并。分为三步，首先<strong>通过符号映射来概括规则</strong>，其次定位在哪里merge，最后把他合并到已知的自动机中。</li>
+</ul>
+<p><img src="https://de-sperado.github.io/images/pasted-4.png" alt="algorithm1"></p>
+<p>运营商倾向于将相同的逻辑应用于每种小区类型（例如，以相同的频率）,只是微调参数。</p>
+<p>缺陷：只能获取与设备交互的操作，无法获取网络内部的操作，例如因为网络因为负载均衡做的操作。</p>
+<h5 id="IMPLEMENTATION"><a href="#IMPLEMENTATION" class="headerlink" title="IMPLEMENTATION"></a>IMPLEMENTATION</h5><h4 id="基础知识补充"><a href="#基础知识补充" class="headerlink" title="基础知识补充"></a>基础知识补充</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/RRC/1560254">RRC</a>（radio resource control）：无线资源控制（Radio Resource Control，RRC），又称为无线资源管理（RRM）或者无线资源分配（RRA），是指通过一定的策略和手段进行无线资源管理、控制和调度，在满足服务质量的要求下，尽可能地充分利用有限的无线网络资源，确保到达规划的覆盖区域，尽可能地提高业务容量和资源利用率</li>
+<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%A7%BB%E5%8A%A8%E6%80%A7%E7%AE%A1%E7%90%86/5934851?fr=aladdin">MM</a>(mobility management)即是对移动终端位置信息、安全性以及业务连续性方面的管理，努力使终端与网络的联系状态达到最佳，进而为各种网络服务的应用提供保证。</li>
 <li></li>
 </ul>
-<h4 id="words"><a href="#words" class="headerlink" title="words"></a>words</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">commercial off-the-shelf (COTS) 商用现成品或技术</span><br><span class="line">chipset 芯片</span><br><span class="line">infrastructure 基础设施</span><br><span class="line">tablet 平板</span><br><span class="line">renovate 修复</span><br><span class="line">empower 授权</span><br><span class="line">shed light on 阐明</span><br><span class="line">facilitate 促进</span><br><span class="line">In a nutshell 简而言之</span><br><span class="line">radio resource control (RRC)</span><br><span class="line">overhead 开销</span><br><span class="line">primer 入门书</span><br><span class="line">access stratum 访问层</span><br><span class="line">variant 变体</span><br><span class="line">de facto 事实上的（西语）</span><br><span class="line">vebdor 供应商</span><br><span class="line">encapsulates 封装</span><br><span class="line">retrieval 恢复</span><br><span class="line">deployability 可部署性</span><br><span class="line">granularity 粒度</span><br><span class="line">low latency 低延迟</span><br><span class="line">elaborate 阐述</span><br><span class="line">two orders of magnitude 两个数量级</span><br><span class="line">of modest sizes 大小适中</span><br><span class="line">customize 认证</span><br><span class="line">perceive 感知</span><br><span class="line">prefix 前缀</span><br><span class="line">iteratively 反复的</span><br><span class="line">directed acyclic graph 有向无环图</span><br><span class="line">minor 轻微的</span><br><span class="line">daemons 守护程序</span><br><span class="line">retrieve 检索</span><br><span class="line">Miscellaneous 杂项</span><br><span class="line">ciphering encryption 加密</span><br><span class="line">troubleshoot 故障排除</span><br><span class="line">vibrates 抖动</span><br><span class="line">seamless 无缝</span><br><span class="line">throttle 节流</span><br><span class="line">intrusion 入侵</span><br><span class="line">loophole 漏洞</span><br><span class="line">refine 提炼</span><br></pre></td></tr></table></figure>
+<h4 id="words"><a href="#words" class="headerlink" title="words"></a>words</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">commercial off-the-shelf (COTS) 商用现成品或技术</span><br><span class="line">chipset 芯片</span><br><span class="line">infrastructure 基础设施</span><br><span class="line">tablet 平板</span><br><span class="line">renovate 修复</span><br><span class="line">empower 授权</span><br><span class="line">shed light on 阐明</span><br><span class="line">facilitate 促进</span><br><span class="line">In a nutshell 简而言之</span><br><span class="line">radio resource control (RRC)</span><br><span class="line">overhead 开销</span><br><span class="line">primer 入门书</span><br><span class="line">access stratum 访问层</span><br><span class="line">variant 变体</span><br><span class="line">de facto 事实上的（西语）</span><br><span class="line">vebdor 供应商</span><br><span class="line">encapsulates 封装</span><br><span class="line">retrieval 恢复</span><br><span class="line">deployability 可部署性</span><br><span class="line">granularity 粒度</span><br><span class="line">low latency 低延迟</span><br><span class="line">elaborate 阐述</span><br><span class="line">two orders of magnitude 两个数量级</span><br><span class="line">of modest sizes 大小适中</span><br><span class="line">customize 认证</span><br><span class="line">perceive 感知</span><br><span class="line">prefix 前缀</span><br><span class="line">iteratively 反复的</span><br><span class="line">directed acyclic graph 有向无环图</span><br><span class="line">minor 轻微的</span><br><span class="line">daemons 守护程序</span><br><span class="line">retrieve 检索</span><br><span class="line">Miscellaneous 杂项</span><br><span class="line">ciphering encryption 加密</span><br><span class="line">troubleshoot 故障排除</span><br><span class="line">vibrates 抖动</span><br><span class="line">seamless 无缝</span><br><span class="line">throttle 节流</span><br><span class="line">intrusion 入侵</span><br><span class="line">loophole 漏洞</span><br><span class="line">refine 提炼</span><br><span class="line">acronyms 首字母缩写</span><br></pre></td></tr></table></figure>
       
 
       
