@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://de-sperado.github.io/images/pasted-3.png">
 <meta property="og:image" content="https://de-sperado.github.io/images/pasted-4.png">
 <meta property="article:published_time" content="2020-10-03T08:55:00.000Z">
-<meta property="article:modified_time" content="2020-10-05T06:57:47.250Z">
+<meta property="article:modified_time" content="2020-10-05T23:44:51.080Z">
 <meta property="article:author" content="Wei Liu">
 <meta property="article:tag" content="Li&#39;s paper">
 <meta property="article:tag" content="论文笔记">
@@ -288,7 +288,21 @@
 <p><img src="https://de-sperado.github.io/images/pasted-4.png" alt="algorithm1"></p>
 <p>运营商倾向于将相同的逻辑应用于每种小区类型（例如，以相同的频率）,只是微调参数。</p>
 <p>缺陷：只能获取与设备交互的操作，无法获取网络内部的操作，例如因为网络因为负载均衡做的操作。</p>
-<h5 id="IMPLEMENTATION"><a href="#IMPLEMENTATION" class="headerlink" title="IMPLEMENTATION"></a>IMPLEMENTATION</h5><h4 id="基础知识补充"><a href="#基础知识补充" class="headerlink" title="基础知识补充"></a>基础知识补充</h4><ul>
+<h5 id="IMPLEMENTATION"><a href="#IMPLEMENTATION" class="headerlink" title="IMPLEMENTATION"></a>IMPLEMENTATION</h5><p><strong>in-device monitir</strong></p>
+<p>两个守护进程（deamon）: proxy 进程提取原始字节流，解码进程解码消息。</p>
+<p><strong>built-in analyzers</strong> </p>
+<p>封装为python包，通过python-for-android 引入apk中。analyzer框架把所有的分析器合并成一个有向无环图，每个node代表一个分析器，v-&gt;w代表w依赖于v。</p>
+<h5 id="EVALUATION"><a href="#EVALUATION" class="headerlink" title="EVALUATION"></a>EVALUATION</h5><ul>
+<li><p>In-device Support and Wide Coverage:(1)流量越多，蜂窝消息越多。（2）移动导致更多的信令和动态信息。（3）低层的信息比高层的要多。</p>
+</li>
+<li><p>Responsiveness and Effectiveness</p>
+</li>
+<li><p>System Overhead</p>
+</li>
+</ul>
+<h5 id="SHOWCASE-APPLICATIONS"><a href="#SHOWCASE-APPLICATIONS" class="headerlink" title="SHOWCASE APPLICATIONS"></a>SHOWCASE APPLICATIONS</h5><p>分别从failure diagnosis, performance improvement and security loophole detection三个方面举例该项目的用处。</p>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>该项目做的工作似乎是在把越过运营商和硬件厂商，强行获取蜂窝网络协议的相关信息。用到了一些旁路技术，甚至是ML方法推断。但是毕竟对这方面了解甚少，项目的需求度和难度有待进一步了解。</p>
+<h4 id="基础知识补充"><a href="#基础知识补充" class="headerlink" title="基础知识补充"></a>基础知识补充</h4><ul>
 <li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/RRC/1560254">RRC</a>（radio resource control）：无线资源控制（Radio Resource Control，RRC），又称为无线资源管理（RRM）或者无线资源分配（RRA），是指通过一定的策略和手段进行无线资源管理、控制和调度，在满足服务质量的要求下，尽可能地充分利用有限的无线网络资源，确保到达规划的覆盖区域，尽可能地提高业务容量和资源利用率</li>
 <li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%A7%BB%E5%8A%A8%E6%80%A7%E7%AE%A1%E7%90%86/5934851?fr=aladdin">MM</a>(mobility management)即是对移动终端位置信息、安全性以及业务连续性方面的管理，努力使终端与网络的联系状态达到最佳，进而为各种网络服务的应用提供保证。</li>
 <li></li>
