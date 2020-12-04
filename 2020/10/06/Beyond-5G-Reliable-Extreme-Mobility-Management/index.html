@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://de-sperado.github.io">
-  <title>Archives: 2020 | 6v&#39;s blog</title>
+  <title>Beyond 5G: Reliable Extreme Mobility Management | 6v&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="A student in BUPT(2017),incoming Ph.D. Student in THU(2021)">
-<meta property="og:type" content="website">
-<meta property="og:title" content="6v&#39;s blog">
-<meta property="og:url" content="https://de-sperado.github.io/archives/2020/index.html">
+  <meta name="description" content="abstract 现有的4G&#x2F;5G移动性管理主要基于无线信号强度，在极端移动性上表现不佳。 设计了REM（Reliable Extreme Mobility management），REM shifts to movement-based mobility management in the delay-Doppler domain. Its signaling overlay relaxes f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Beyond 5G: Reliable Extreme Mobility Management">
+<meta property="og:url" content="https://de-sperado.github.io/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/index.html">
 <meta property="og:site_name" content="6v&#39;s blog">
-<meta property="og:description" content="A student in BUPT(2017),incoming Ph.D. Student in THU(2021)">
+<meta property="og:description" content="abstract 现有的4G&#x2F;5G移动性管理主要基于无线信号强度，在极端移动性上表现不佳。 设计了REM（Reliable Extreme Mobility management），REM shifts to movement-based mobility management in the delay-Doppler domain. Its signaling overlay relaxes f">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-10-06T07:47:06.000Z">
+<meta property="article:modified_time" content="2020-10-07T07:10:53.617Z">
 <meta property="article:author" content="Wei Liu">
 <meta name="twitter:card" content="summary">
   
@@ -148,129 +150,244 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-Beyond-5G-Reliable-Extreme-Mobility-Management" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      Beyond 5G: Reliable Extreme Mobility Management
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/" class="archive-article-date">
+
+        
+        <a href="/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/" class="archive-article-date">
   	<time datetime="2020-10-06T07:47:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-06</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/">Beyond 5G: Reliable Extreme Mobility Management</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h4><ul>
+<li>现有的4G/5G移动性管理主要基于无线信号强度，在极端移动性上表现不佳。</li>
+<li>设计了REM（Reliable Extreme Mobility management），REM shifts to movement-based mobility management in the <strong>delay-Doppler domain</strong>. Its signaling overlay <strong>relaxes feedback</strong> via <strong>crossband estimation</strong>, simplifies policies with <strong>provable conflict freedom</strong>,and stabilizes signaling via <strong>scheduling-based OTFS modulation</strong>.（这段涉及的知识也太多了😮）</li>
+</ul>
+<h4 id="INTRODUCTION"><a href="#INTRODUCTION" class="headerlink" title="INTRODUCTION"></a>INTRODUCTION</h4><ul>
+<li>4G在Extreme Mobility中是不稳定的，移动事件多且脆弱，放大了错误，时延，震荡，环路。5g也有相同的缺陷。</li>
+<li>基础原因是基于无线信号强度的设计，依赖于客服端的反馈来触发。在Extreme Mobility时，信号会受<a target="_blank" rel="noopener" href="https://blog.csdn.net/guolinlin11/article/details/80867233">Doppler shift</a>影响.</li>
+<li>运营商采取主动策略来减轻错误，但是这种方法放大了政策冲突，最终低效了这种减轻。</li>
+<li>REM key insight：客户端的移动比无线信号更有规律，更强。</li>
+<li>REM是在延迟多普勒域的信号覆盖，它利用最近提出的正交时频空间调制（OTFS）调制提取客户端移动和多路径配置文件。</li>
+<li>为了松弛客户端的反馈，REM设计了一个基于交叉的估计以并行化测量。通过把OTFS经过SVD实现。</li>
+<li>REM基于可证明冲突自由进一步简化了策略，使用新颖的基于调度的OTFS进一步稳固了信号。</li>
+</ul>
+<h4 id="MOBILITY-MANAGEMENT-TODAY"><a href="#MOBILITY-MANAGEMENT-TODAY" class="headerlink" title="MOBILITY MANAGEMENT TODAY"></a>MOBILITY MANAGEMENT TODAY</h4><ul>
+<li>wireless quality and client mobility 相互影响。无线质量决定目标小区，随着客户移动，潜在的信号传播路线改变，并且导致多普勒频移</li>
+</ul>
+<h4 id="UNRELIABLE-EXTREME-MOBILITY"><a href="#UNRELIABLE-EXTREME-MOBILITY" class="headerlink" title="UNRELIABLE EXTREME MOBILITY"></a>UNRELIABLE EXTREME MOBILITY</h4><ul>
+<li><p>overview of extreme mobility in reality</p>
+<ul>
+<li>频繁的handover。</li>
+<li>不可忽视的错误率。</li>
+<li>多样的错误原因。</li>
+<li>策略冲突。</li>
+</ul>
+</li>
+<li><p>Triggering: Slow, Unreliable Feedback</p>
+<ul>
+<li>dilemma between <strong>exploration</strong> (more measurements for proper decision) and <strong>exploitation</strong> (timely triggering for handover).</li>
+<li>Slow feedback:（1）Head-of-line blocking，需要检测多个候选的小区。（2）Transient loop mitigation，瞬间的测量是动态的，并且引起基站间短暂的振荡，为了缓解，4/5g要求客户端只报告那些满足一定的可配置的触发间隔的小区，造成延迟。并且无线质量可能改变，可能造成迟缓的反馈和错误的触发。</li>
+<li>Lost feedback</li>
+</ul>
+</li>
+<li><p>Decision: Complex, Conflicting Policy：为了容纳多方面需求，每个小区能够定制他的策略，通常与无线反馈紧密耦合，有两个缺陷。</p>
+<ul>
+<li>多状态策略：和正在服务的小区频率相同的小区是第一个测量和选择的。之有同频（intra）小区没有的时候，才会通过测量和重配置考虑频间小区（inter）。频间测量会耗费资源并减慢数据传输。高速移动时，策略可能会丢失候选小区，并且没有发送反馈给服务的小区。即便同频小区不存在，也要经过额外的往返，可能导致客户丢失移交的机会。总的来说，频间测绘迫使政策考虑频谱利用率和决策延迟的平衡。</li>
+<li>Policy conflicts：为了缓解慢反馈和决策，运营商采取了主动策略，在邻居小区比服务小区好之前，就进行handover，如果邻居小区也这样做，就会产生振荡。</li>
+</ul>
+</li>
+<li><p>Execution: Unreliable Signaling，服务小区无法把handover命令传递给client。</p>
+</li>
+<li><p>5G：依旧面临这个问题，原因如下：</p>
+<ul>
+<li>handovers策略不变。</li>
+<li>small dense cells under high carrier frequency，handover更频繁，更容易发生多普勒频移。</li>
+<li>物理层虽然经过提炼，但是依旧基于OFDM，仍面临相同问题。</li>
+</ul>
+</li>
+</ul>
+<h4 id="INTUITIONS-BEHIND-REM"><a href="#INTUITIONS-BEHIND-REM" class="headerlink" title="INTUITIONS BEHIND REM"></a>INTUITIONS BEHIND REM</h4><ul>
+<li>REM从非直接的基于无线信号强度转移到直接的基于移动性。客户端决定物理多路和对每个小区的多普勒影响，从而影响无线质量。与具有短一致性和动态变化的无线技术相比，客户端的移动速度较慢且可以通过惯性预测，因此可以更加可靠地驱动极端移动性管理。With this knowledge, REM relaxes the feedback’s exploration-exploitation dilemma in triggering phase, simplifies the policies in decision phase, and stabilizes the signaling traffic in execution phase.</li>
+<li>Delay-Doppler domain <ul>
+<li>无线信道决定无线电信号怎样从发送方经过</li>
+</ul>
+</li>
+</ul>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://de-sperado.github.io/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/04/%E4%BF%9D%E7%A0%94%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2020-10-03T23:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/04/%E4%BF%9D%E7%A0%94%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">保研过程总结</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/04/%E4%BF%9D%E7%A0%94%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93/">保研过程总结</a>
-    </h1>
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "E1CRDWFoCPYXdgicbj2G52lN-gzGzoHsz",
+            app_key: "VoGLa9HTeeBjsnQv2ujlWJOc",
+            placeholder: "ヾﾉ≧∀≦)o欢迎评论!",
+            avatar:"mm"
+        });
+    }
+</script>
+    </section>
+  
+  
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">保研</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/03/MobileInsight-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2020-10-03T08:55:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/03/MobileInsight-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">MobileInsight 论文笔记</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Li's paper</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">论文笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+
 
 
           </div>
@@ -293,8 +410,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

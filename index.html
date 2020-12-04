@@ -150,6 +150,125 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Beyond-5G-Reliable-Extreme-Mobility-Management" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/">Beyond 5G: Reliable Extreme Mobility Management</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/" class="archive-article-date">
+  	<time datetime="2020-10-06T07:47:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h4><ul>
+<li>现有的4G/5G移动性管理主要基于无线信号强度，在极端移动性上表现不佳。</li>
+<li>设计了REM（Reliable Extreme Mobility management），REM shifts to movement-based mobility management in the <strong>delay-Doppler domain</strong>. Its signaling overlay <strong>relaxes feedback</strong> via <strong>crossband estimation</strong>, simplifies policies with <strong>provable conflict freedom</strong>,and stabilizes signaling via <strong>scheduling-based OTFS modulation</strong>.（这段涉及的知识也太多了😮）</li>
+</ul>
+<h4 id="INTRODUCTION"><a href="#INTRODUCTION" class="headerlink" title="INTRODUCTION"></a>INTRODUCTION</h4><ul>
+<li>4G在Extreme Mobility中是不稳定的，移动事件多且脆弱，放大了错误，时延，震荡，环路。5g也有相同的缺陷。</li>
+<li>基础原因是基于无线信号强度的设计，依赖于客服端的反馈来触发。在Extreme Mobility时，信号会受<a target="_blank" rel="noopener" href="https://blog.csdn.net/guolinlin11/article/details/80867233">Doppler shift</a>影响.</li>
+<li>运营商采取主动策略来减轻错误，但是这种方法放大了政策冲突，最终低效了这种减轻。</li>
+<li>REM key insight：客户端的移动比无线信号更有规律，更强。</li>
+<li>REM是在延迟多普勒域的信号覆盖，它利用最近提出的正交时频空间调制（OTFS）调制提取客户端移动和多路径配置文件。</li>
+<li>为了松弛客户端的反馈，REM设计了一个基于交叉的估计以并行化测量。通过把OTFS经过SVD实现。</li>
+<li>REM基于可证明冲突自由进一步简化了策略，使用新颖的基于调度的OTFS进一步稳固了信号。</li>
+</ul>
+<h4 id="MOBILITY-MANAGEMENT-TODAY"><a href="#MOBILITY-MANAGEMENT-TODAY" class="headerlink" title="MOBILITY MANAGEMENT TODAY"></a>MOBILITY MANAGEMENT TODAY</h4><ul>
+<li>wireless quality and client mobility 相互影响。无线质量决定目标小区，随着客户移动，潜在的信号传播路线改变，并且导致多普勒频移</li>
+</ul>
+<h4 id="UNRELIABLE-EXTREME-MOBILITY"><a href="#UNRELIABLE-EXTREME-MOBILITY" class="headerlink" title="UNRELIABLE EXTREME MOBILITY"></a>UNRELIABLE EXTREME MOBILITY</h4><ul>
+<li><p>overview of extreme mobility in reality</p>
+<ul>
+<li>频繁的handover。</li>
+<li>不可忽视的错误率。</li>
+<li>多样的错误原因。</li>
+<li>策略冲突。</li>
+</ul>
+</li>
+<li><p>Triggering: Slow, Unreliable Feedback</p>
+<ul>
+<li>dilemma between <strong>exploration</strong> (more measurements for proper decision) and <strong>exploitation</strong> (timely triggering for handover).</li>
+<li>Slow feedback:（1）Head-of-line blocking，需要检测多个候选的小区。（2）Transient loop mitigation，瞬间的测量是动态的，并且引起基站间短暂的振荡，为了缓解，4/5g要求客户端只报告那些满足一定的可配置的触发间隔的小区，造成延迟。并且无线质量可能改变，可能造成迟缓的反馈和错误的触发。</li>
+<li>Lost feedback</li>
+</ul>
+</li>
+<li><p>Decision: Complex, Conflicting Policy：为了容纳多方面需求，每个小区能够定制他的策略，通常与无线反馈紧密耦合，有两个缺陷。</p>
+<ul>
+<li>多状态策略：和正在服务的小区频率相同的小区是第一个测量和选择的。之有同频（intra）小区没有的时候，才会通过测量和重配置考虑频间小区（inter）。频间测量会耗费资源并减慢数据传输。高速移动时，策略可能会丢失候选小区，并且没有发送反馈给服务的小区。即便同频小区不存在，也要经过额外的往返，可能导致客户丢失移交的机会。总的来说，频间测绘迫使政策考虑频谱利用率和决策延迟的平衡。</li>
+<li>Policy conflicts：为了缓解慢反馈和决策，运营商采取了主动策略，在邻居小区比服务小区好之前，就进行handover，如果邻居小区也这样做，就会产生振荡。</li>
+</ul>
+</li>
+<li><p>Execution: Unreliable Signaling，服务小区无法把handover命令传递给client。</p>
+</li>
+<li><p>5G：依旧面临这个问题，原因如下：</p>
+<ul>
+<li>handovers策略不变。</li>
+<li>small dense cells under high carrier frequency，handover更频繁，更容易发生多普勒频移。</li>
+<li>物理层虽然经过提炼，但是依旧基于OFDM，仍面临相同问题。</li>
+</ul>
+</li>
+</ul>
+<h4 id="INTUITIONS-BEHIND-REM"><a href="#INTUITIONS-BEHIND-REM" class="headerlink" title="INTUITIONS BEHIND REM"></a>INTUITIONS BEHIND REM</h4><ul>
+<li>REM从非直接的基于无线信号强度转移到直接的基于移动性。客户端决定物理多路和对每个小区的多普勒影响，从而影响无线质量。与具有短一致性和动态变化的无线技术相比，客户端的移动速度较慢且可以通过惯性预测，因此可以更加可靠地驱动极端移动性管理。With this knowledge, REM relaxes the feedback’s exploration-exploitation dilemma in triggering phase, simplifies the policies in decision phase, and stabilizes the signaling traffic in execution phase.</li>
+<li>Delay-Doppler domain <ul>
+<li>无线信道决定无线电信号怎样从发送方经过</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/06/Beyond-5G-Reliable-Extreme-Mobility-Management/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+
+  
     <article id="post-保研过程总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -435,11 +554,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">保研</a>
+                <a href="javascript:void(0)" class="js-tag color5">论文笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">论文笔记</a>
+                <a href="javascript:void(0)" class="js-tag color3">保研</a>
               </li>
             
             <div class="clearfix"></div>
